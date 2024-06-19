@@ -6,21 +6,57 @@ import PostPage from "./PostPage";
 import About from "./About";
 import Missing from "./Missing";
 import Footer from "./Footer";
-import { Link, Route, Routes, useNavigate } from "react-router-dom";
+import { Route, Routes, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { format } from "date-fns";
 import api from "./api/posts";
 import Editpost from "./Editpost";
 import useWindowsize from "./hooks/useWindowsize";
 function App() {
-  const [posts, setPosts] = useState([])
+  const [posts, setPosts] = useState([
+    {
+      "id": "2",
+      "title": "Second post",
+      "datetime": "July 16, 2021 11:47:48 AM",
+      "body": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. two"
+    },
+    {
+      "id": "3",
+      "title": "Number Three",
+      "datetime": "July 16, 2021 11:48:01 AM",
+      "body": "Third post... Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
+    },
+    {
+      "id": "411",
+      "title": "React Js",
+      "datetime": "June 19, 2024 12:58:54 PM",
+      "body": "Fully Finished...!!!!"
+    },
+    {
+      "id": "4111",
+      "title": "Github",
+      "datetime": "June 19, 2024 1:49:34 PM",
+      "body": "Onto Next...!!!"
+    },
+    {
+      "id": "41111",
+      "title": "Sem Holidays",
+      "datetime": "June 19, 2024 1:50:04 PM",
+      "body": "Practicing for the Job Interviews..."
+    },
+    {
+      "id": "411111",
+      "title": "My First Post",
+      "datetime": "June 19, 2024 4:02:25 PM",
+      "body": "aswin"
+    }
+  ])
   const [search, setSearch] = useState("")
   const [searchResults, setSearchresults] = useState([])
   const [postTitle, setPostTitle] = useState('');
   const [postBody, setPostBody] = useState('');
   const [editTitle, setEditTitle] = useState('');
   const [editBody, setEditBody] = useState('');
-  const [isLoading, setisLoading] = useState(true);
   const navigate = useNavigate()
   const {width} = useWindowsize()
 
@@ -60,8 +96,7 @@ function App() {
         const datetime = format(new Date(), 'MMMM dd, yyyy pp');
         const newPost = { id, title: postTitle, datetime, body: postBody };
         try{
-          const response = await api.post('/posts', newPost)
-          const allPosts = [...posts, response.data];
+          const allPosts = [...posts, newPost];
           setPosts(allPosts);
           setPostTitle('');
           setPostBody('');
@@ -81,8 +116,7 @@ function App() {
       const datetime = format(new Date(), 'MMMM dd, yyyy pp');
       const updatedPost = { id, title: editTitle, datetime, body: editBody };
       try {
-        const response = await api.put(`/posts/${id}`, updatedPost)
-        setPosts(posts.map(post => post.id === id ? {...response.data} : post));
+        setPosts(posts.map(post => post.id === id ? {...updatedPost} : post));
         setEditTitle('');
         setEditBody('');
         navigate('/')
@@ -100,7 +134,6 @@ function App() {
 
     const handleDelete = async (id) => {
       try{
-        await api.delete(`/posts/${id}`)
         const postsList = posts.filter(post => post.id !== id);
         setPosts(postsList);
         navigate('/')
@@ -122,8 +155,6 @@ function App() {
           setSearch={setSearch} />
         <Routes>
           <Route path="/" element = {<Home posts ={searchResults} />}/>
-          {/* {isLoading && <p style={{"text-align":"center"}}>Loading Posts...</p>}
-          {!isLoading && </div>}/> */}
           <Route path="post">
             <Route index element = {<NewPost
                 handleSubmit={handleSubmit}
