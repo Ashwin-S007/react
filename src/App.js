@@ -73,13 +73,8 @@ function App() {
         } else {
           console.log(`Error : ${err.message}`);
         }
-      } finally{
-        setisLoading(false)
-      }
+      } 
     }
-    setTimeout(() => {
-      (async () => await fetchPosts())()
-    }, 2000)
   }, [])
 
   useEffect(() => {
