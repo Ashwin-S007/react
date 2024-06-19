@@ -1,7 +1,6 @@
-import { useState, useEffect, useContext } from "react";
-import { useParams, Link, useHistory } from "react-router-dom";
-import api from './api/posts';
-import { format } from 'date-fns';
+import { useEffect } from "react";
+import { useParams, Link } from "react-router-dom";
+
 
 const EditPost = ({
     posts, handleEdit, editBody, setEditBody, editTitle, setEditTitle }) => {
